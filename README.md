@@ -1,5 +1,5 @@
 Project Description
-Studify (StudyTracker) is a comprehensive, full-stack web application designed to help students efficiently plan, track, and optimize their study habits. The platform features a modern, user-friendly frontend built with React and Vite, styled using Tailwind CSS, and a robust backend powered by FastAPI and SQLAlchemy.
+Studify (Study-Planner) is a comprehensive, full-stack web application designed to help students efficiently plan, track, and optimize their study habits. The platform features a modern, user-friendly frontend built with React and Vite, styled using Tailwind CSS, and a robust backend powered by FastAPI and SQLAlchemy.
 
 Key Features
 Personalized Dashboard:
