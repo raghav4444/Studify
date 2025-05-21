@@ -30,7 +30,7 @@ const CenterContent: React.FC<CenterContentProps> = ({
   activeTab,
   setActiveTab,
 }) => {
-  const { sessions, syncStudyPlans } = useStudyContext();
+  const { sessions, syncStudyPlans, subjects, addSession } = useStudyContext();
   const [user] = useLocalStorage<User>("user", mockUser);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [studyPlans, setStudyPlans] = useState<StudyPlan[]>([]);
@@ -95,7 +95,23 @@ const CenterContent: React.FC<CenterContentProps> = ({
           </div>
         );
       case "timer":
-        return <StudyTimer onSessionComplete={() => {}} />;
+        return (
+          <StudyTimer
+            onSessionComplete={(duration) => {
+              // Add a real session to context
+              addSession({
+                id: `session-${Date.now()}`,
+                subjectId: subjects[0] ? subjects[0].id : "timer-generic",
+                chapterId: "timer-generic-chapter",
+                date: new Date().toISOString(),
+                duration,
+                completed: true,
+                mood: "focused",
+                notes: "Timer Session",
+              });
+            }}
+          />
+        );
       case "achievements":
         return (
           <AchievementsView

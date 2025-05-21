@@ -158,15 +158,15 @@ const Dashboard: React.FC<DashboardProps> = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex justify-between items-center">
           <h2 className="text-5xl sm:text-6xl font-extrabold text-white drop-shadow-[0_0_16px_#00eaff,0_0_32px_#00eaff99] tracking-tight flex items-center gap-3 relative z-10">
-            <span className="inline-block w-8 h-8 rounded-full bg-gradient-to-br from-neon-blue via-blue-500 to-purple-500 shadow-[0_0_16px_#00eaff,0_0_32px_#00eaff99] animate-pulse"></span>
+            <span className="inline-block w-8 h-8 rounded-full bg-gradient-to-br from-neon-blue via-blue-700 to-purple-500 shadow-[0_0_16px_#00eaff,0_0_32px_#00eaff99] animate-pulse"></span>
             Hello, {user.name}! <span className="animate-wave">👋</span>
             <span
-              className="absolute left-0 -bottom-3 w-full h-2 bg-gradient-to-r from-neon-blue via-blue-400 to-purple-500 rounded-full blur-[2px] animate-pulse opacity-90"
+              className="absolute left-0 -bottom-3 w-full h-2 bg-gradient-to-r from-neon-blue via-white to-purple-500 rounded-full blur-[2px] animate-pulse opacity-100"
               style={{ zIndex: 1 }}
             ></span>
           </h2>
         </div>
-        <p className="text-slate-200 mt-6 text-xl font-semibold drop-shadow-[0_0_8px_#00eaff]">
+        <p className="text-slate-200 mt-6 text-xl font-semibold drop-shadow-neon">
           Here's an overview of your study progress and statistics.
         </p>
       </div>
@@ -182,8 +182,11 @@ const Dashboard: React.FC<DashboardProps> = ({
                 {formatTime(todayMinutes)}
               </h3>
             </div>
-            <div className="bg-[#172554]/60 p-3 rounded-lg shadow-neon">
-              <Clock size={24} className="text-neon-blue drop-shadow-neon" />
+            <div className="bg-blue-900 p-3 rounded-lg shadow-neon">
+              <Clock
+                size={24}
+                className="text-neon-blue bg-white rounded-full drop-shadow-neon"
+              />
             </div>
           </div>
         </div>
@@ -220,7 +223,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             <div>
               <p className="text-blue-200 font-medium mb-1">Total Study Time</p>
               <h3 className="text-2xl font-semibold text-white">
-                {formatTime(user.totalStudyHours * 60)}
+                {formatTime(sessions.reduce((sum, s) => sum + s.duration, 0))}
               </h3>
             </div>
             <div className="bg-[#78350f]/60 p-3 rounded-lg shadow-neon">
@@ -233,7 +236,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div className="lg:col-span-2 glass-card shadow-neon p-4 sm:p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-neon-blue drop-shadow-neon flex items-center gap-2 relative">
+            <h3 className="text-2xl font-bold text-white text-neon-blue drop-shadow-neon flex items-center gap-2 relative">
               <TrendingUp
                 size={24}
                 className="mr-1 text-neon-blue drop-shadow-neon"
@@ -254,19 +257,19 @@ const Dashboard: React.FC<DashboardProps> = ({
         <div className="glass-card shadow-neon p-4 sm:p-6">
           <div className="flex items-center mb-4">
             <Book size={24} className="mr-2 text-neon-blue drop-shadow-neon" />
-            <h3 className="text-2xl font-bold text-neon-blue drop-shadow-neon relative">
+            <h3 className="text-2xl text-white font-bold text-neon-blue drop-shadow-neon relative">
               Subject Distribution
               <span className="absolute left-0 -bottom-1 w-40 h-1 bg-gradient-to-r from-neon-blue via-blue-400 to-purple-500 rounded-full blur-[1px] animate-pulse opacity-80"></span>
             </h3>
           </div>
-          <div className="h-64">
+          <div className="h-64 text-white">
             <SubjectDistribution data={subjectDistribution} />
           </div>
         </div>
       </div>
 
       <div className="glass-card shadow-neon p-4 sm:p-6 mb-6">
-        <h3 className="text-2xl font-bold text-neon-blue mb-4 drop-shadow-neon relative">
+        <h3 className="text-2xl text-white font-bold text-neon-blue mb-4 drop-shadow-neon relative">
           Recent Study Sessions
           <span className="absolute left-0 -bottom-1 w-56 h-1 bg-gradient-to-r from-neon-blue via-blue-400 to-purple-500 rounded-full blur-[1px] animate-pulse opacity-80"></span>
         </h3>
@@ -284,7 +287,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       </div>
 
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-extrabold text-neon-blue drop-shadow-neon relative">
+        <h2 className="text-3xl text-white font-extrabold text-neon-blue drop-shadow-neon relative">
           Study Plans
           <span className="absolute left-0 -bottom-1 w-40 h-1 bg-gradient-to-r from-neon-blue via-blue-400 to-purple-500 rounded-full blur-[1px] animate-pulse opacity-80"></span>
         </h2>

@@ -91,37 +91,36 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {achievements.map((achievement) => (
-          <Card
+          <div
             key={achievement.id}
-            className={`glass-card border-2 border-neon-blue shadow-neon group ${
-              achievement.unlocked ? "border-neon-blue" : "border-gray-700/50"
-            }`}
+            className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col"
+            style={{ minWidth: 260, maxWidth: 320 }}
           >
-            <CardHeader className="flex items-center gap-3">
-              <div
-                className={`p-3 rounded-lg ${
-                  achievement.unlocked ? "bg-blue-900/50" : "bg-gray-700/50"
-                } group-hover:bg-gray-700/70 transition-colors duration-300`}
-              >
+            {/* Top section: icon and title */}
+            <div className="bg-[#223366] flex items-center gap-3 px-5 py-4 border-b border-white">
+              <div className="p-2 rounded-lg bg-[#223366]">
                 {React.cloneElement(achievement.icon as React.ReactElement, {
-                  className: `text-neon-blue drop-shadow-neon group-hover:text-blue-300 transition-colors duration-300`,
+                  className: `text-blue-400 w-8 h-8`,
                 })}
               </div>
-              <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+              <span className="text-2xl font-extrabold text-white ml-2">
                 {achievement.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-blue-200 mb-2">{achievement.description}</p>
-              <div className="flex justify-between text-sm text-blue-300 mb-1">
+              </span>
+            </div>
+            {/* Bottom section: description, progress, lock */}
+            <div className="flex-1 flex flex-col justify-between bg-blue-900/60 px-5 py-4">
+              <p className="text-white mb-2 text-base">
+                {achievement.description}
+              </p>
+              <div className="flex justify-between text-sm text-blue-200 mb-1">
                 <span>Progress</span>
                 <span>
                   {achievement.progress} / {achievement.maxProgress}
                 </span>
               </div>
-              <div className="w-full bg-blue-900/40 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-blue-900/40 rounded-full h-2 overflow-hidden mb-2">
                 <div
-                  className={`h-2 rounded-full transition-all duration-700 bg-neon-blue group-hover:bg-blue-400`}
+                  className="h-2 rounded-full transition-all duration-700 bg-blue-400"
                   style={{
                     width: `${Math.min(
                       (achievement.progress / achievement.maxProgress) * 100,
@@ -131,21 +130,21 @@ const AchievementsView: React.FC<AchievementsViewProps> = ({
                 ></div>
               </div>
               {achievement.unlocked ? (
-                <div className="mt-3 flex items-center text-sm text-neon-blue animate-fadeIn">
+                <div className="mt-2 flex items-center text-sm text-blue-400 animate-fadeIn">
                   <Award size={16} className="mr-1" />
                   <span>Unlocked!</span>
                 </div>
               ) : (
                 <div
-                  className="mt-3 flex items-center text-sm text-gray-400"
+                  className="mt-2 flex items-center text-sm text-blue-200 opacity-70"
                   title="Keep going to unlock this achievement!"
                 >
                   <Star size={16} className="mr-1" />
                   <span>Locked</span>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
     </div>

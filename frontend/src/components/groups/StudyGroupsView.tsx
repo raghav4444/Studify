@@ -31,7 +31,7 @@ const StudyGroupsView: React.FC<StudyGroupsViewProps> = ({
   openCreateGroupModal,
 }) => {
   return (
-    <div className="min-h-screen p-4 sm:p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-x-hidden">
+    <div className="min-h-screen bg-blue-900/50 p-4 sm:p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-x-hidden">
       {/* Animated glowing header */}
       <div className="flex flex-col items-center mb-8">
         <div className="mb-2 animate-pulse">

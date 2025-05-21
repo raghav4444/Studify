@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Play, Pause, RotateCcw, Coffee, Settings, Timer } from "lucide-react";
+import { useStudyContext } from "./context/StudyContext";
 
 interface StudyTimerProps {
   onSessionComplete: (duration: number) => void;
@@ -30,6 +31,7 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
     { mode: string; duration: number; time: string }[]
   >([]);
   const [quoteIdx, setQuoteIdx] = useState(0);
+  const { addSession, subjects } = useStudyContext();
 
   // Sound notification
   const playSound = () => {
@@ -77,6 +79,16 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
             // If study session ended, record the duration
             if (timerMode === "study") {
               onSessionComplete(studyTime);
+              addSession({
+                id: `session-${Date.now()}`,
+                subjectId: subjects[0] ? subjects[0].id : "timer-generic",
+                chapterId: "timer-generic-chapter",
+                date: new Date().toISOString(),
+                duration: studyTime,
+                completed: true,
+                mood: "focused",
+                notes: "Timer Session",
+              });
               setTimerMode("break");
               return breakTime;
             } else {
@@ -107,24 +119,24 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-2xl shadow-2xl p-6 max-w-lg mx-auto border border-blue-500/30 backdrop-blur">
-      {/* Animated glowing header */}
-      <div className="flex flex-col items-center mb-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0a192f] p-4">
+      {/* Header Card */}
+      <div className="glass-card border-neon-blue shadow-neon max-w-xl w-full mx-auto mb-8 p-8 flex flex-col items-center">
         <div className="mb-2 animate-pulse">
           <Timer
             size={40}
             className="text-blue-400 drop-shadow-[0_0_16px_rgba(59,130,246,0.7)]"
           />
         </div>
-        <h2 className="text-2xl font-bold text-white drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] mb-1">
+        <h2 className="text-3xl font-bold text-white drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] mb-1 text-center">
           Study Timer
         </h2>
-        <p className="text-blue-200 text-base font-medium drop-shadow mb-2 text-center min-h-[24px]">
+        <p className="text-blue-200 text-lg font-medium drop-shadow mb-2 text-center min-h-[24px]">
           {MOTIVATIONAL_QUOTES[quoteIdx]}
         </p>
       </div>
-      {/* Quick Presets */}
-      <div className="flex justify-center gap-3 mb-6">
+      {/* Presets Card */}
+      <div className="glass-card border-neon-blue shadow-neon max-w-md w-full mx-auto mb-8 p-4 flex justify-center gap-3">
         {PRESETS.map((preset) => (
           <button
             key={preset.label}
@@ -135,15 +147,15 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
               setIsRunning(false);
               setSeconds(preset.study * 60);
             }}
-            className="px-3 py-1.5 rounded-lg bg-blue-900/40 border border-blue-500/30 text-blue-200 hover:bg-blue-700/40 hover:text-white transition-all duration-200 font-semibold shadow"
+            className="px-4 py-2 rounded-xl bg-blue-900/40 border border-blue-500/30 text-blue-200 hover:bg-blue-700/40 hover:text-white transition-all duration-200 font-semibold shadow focus:ring-2 focus:ring-blue-400 focus:outline-none"
           >
             {preset.label}
           </button>
         ))}
       </div>
-      {/* Timer circle */}
-      <div className="flex justify-center mb-8">
-        <div className="relative w-56 h-56">
+      {/* Timer Card */}
+      <div className="glass-card border-neon-blue shadow-neon max-w-md w-full mx-auto mb-8 p-8 flex flex-col items-center">
+        <div className="relative w-56 h-56 mb-4">
           {/* Progress circle background */}
           <svg className="w-full h-full" viewBox="0 0 100 100">
             <circle
@@ -179,51 +191,53 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
             </span>
           </div>
         </div>
+        {/* Controls Card */}
+        <div className="glass-card border-neon-blue shadow-neon flex justify-center space-x-4 p-4 mt-2">
+          <button
+            title={isRunning ? "Pause" : "Start"}
+            onClick={() => setIsRunning(!isRunning)}
+            className={`p-4 rounded-full shadow-lg transition-colors border border-blue-500/20 text-2xl font-bold focus:ring-2 focus:ring-blue-400 focus:outline-none ${
+              isRunning
+                ? "bg-red-900/60 text-red-400 hover:bg-red-900/80"
+                : "bg-green-900/60 text-green-400 hover:bg-green-900/80"
+            }`}
+          >
+            {isRunning ? <Pause size={28} /> : <Play size={28} />}
+          </button>
+          <button
+            title="Reset"
+            onClick={resetTimer}
+            className="p-4 rounded-full bg-gray-900/60 text-blue-300 border border-blue-500/20 hover:bg-gray-900/80 transition-colors shadow-lg text-2xl font-bold focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            disabled={isRunning}
+          >
+            <RotateCcw size={28} />
+          </button>
+          <button
+            title={
+              timerMode === "study" ? "Switch to Break" : "Switch to Study"
+            }
+            onClick={() => {
+              setTimerMode(timerMode === "study" ? "break" : "study");
+              setIsRunning(false);
+              setSeconds(timerMode === "study" ? breakTime : studyTime);
+            }}
+            className="p-4 rounded-full bg-blue-900/60 text-blue-300 border border-blue-500/20 hover:bg-blue-900/80 transition-colors shadow-lg text-2xl font-bold focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          >
+            {timerMode === "study" ? <Coffee size={28} /> : <Play size={28} />}
+          </button>
+          <button
+            title="Settings"
+            onClick={() => setShowSettings(!showSettings)}
+            className="p-4 rounded-full bg-gray-800/70 text-blue-300 border border-blue-500/20 hover:bg-blue-900/80 transition-colors shadow-lg text-2xl font-bold focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          >
+            <Settings size={28} />
+          </button>
+        </div>
       </div>
-      {/* Controls */}
-      <div className="flex justify-center space-x-4 mb-6">
-        <button
-          title={isRunning ? "Pause" : "Start"}
-          onClick={() => setIsRunning(!isRunning)}
-          className={`p-4 rounded-full shadow-lg transition-colors border border-blue-500/20 text-2xl font-bold ${
-            isRunning
-              ? "bg-red-900/60 text-red-400 hover:bg-red-900/80"
-              : "bg-green-900/60 text-green-400 hover:bg-green-900/80"
-          }`}
-        >
-          {isRunning ? <Pause size={28} /> : <Play size={28} />}
-        </button>
-        <button
-          title="Reset"
-          onClick={resetTimer}
-          className="p-4 rounded-full bg-gray-900/60 text-blue-300 border border-blue-500/20 hover:bg-gray-900/80 transition-colors shadow-lg text-2xl font-bold"
-          disabled={isRunning}
-        >
-          <RotateCcw size={28} />
-        </button>
-        <button
-          title={timerMode === "study" ? "Switch to Break" : "Switch to Study"}
-          onClick={() => {
-            setTimerMode(timerMode === "study" ? "break" : "study");
-            setIsRunning(false);
-            setSeconds(timerMode === "study" ? breakTime : studyTime);
-          }}
-          className="p-4 rounded-full bg-blue-900/60 text-blue-300 border border-blue-500/20 hover:bg-blue-900/80 transition-colors shadow-lg text-2xl font-bold"
-        >
-          {timerMode === "study" ? <Coffee size={28} /> : <Play size={28} />}
-        </button>
-        <button
-          title="Settings"
-          onClick={() => setShowSettings(!showSettings)}
-          className="p-4 rounded-full bg-gray-800/70 text-blue-300 border border-blue-500/20 hover:bg-blue-900/80 transition-colors shadow-lg text-2xl font-bold"
-        >
-          <Settings size={28} />
-        </button>
-      </div>
-      {/* Settings panel */}
+      {/* Settings Panel */}
       {showSettings && (
-        <div className="mb-6 p-4 bg-gray-800/70 rounded-lg border border-blue-500/20">
-          <h4 className="text-sm font-medium text-blue-200 mb-3">
+        <div className="glass-card border-neon-blue shadow-neon max-w-md w-full mx-auto mb-8 p-6">
+          <h4 className="text-lg font-medium text-blue-200 mb-3">
             Timer Settings
           </h4>
           <div className="grid grid-cols-2 gap-4">
@@ -257,7 +271,7 @@ const StudyTimer: React.FC<StudyTimerProps> = ({ onSessionComplete }) => {
         </div>
       )}
       {/* Session Log */}
-      <div className="mt-8">
+      <div className="glass-card border-neon-blue shadow-neon max-w-md w-full mx-auto mt-4 p-6">
         <h4 className="text-blue-200 font-semibold mb-2">Session Log</h4>
         <ul className="space-y-1 max-h-32 overflow-y-auto pr-2">
           {sessionLog.length === 0 && (

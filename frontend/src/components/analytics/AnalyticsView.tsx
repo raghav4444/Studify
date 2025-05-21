@@ -56,34 +56,28 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ sessions }) => {
       </div>
       {/* Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 max-w-6xl mx-auto">
-        <Card className="glass-card border-2 border-neon-blue shadow-neon group">
-          <CardHeader className="flex items-center gap-3">
-            <Clock
-              size={28}
-              className="text-neon-blue group-hover:text-blue-300 drop-shadow-neon transition-colors duration-300"
-            />
-            <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col">
+          <CardHeader className="flex items-center gap-3 bg-[#223366] border-b border-white">
+            <Clock size={28} className="text-blue-200 w-7 h-7" />
+            <CardTitle className="text-white font-extrabold ml-2">
               Average Session Duration
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <span className="text-3xl font-bold text-blue-200">
+            <span className="text-3xl font-bold text-white">
               {formatTime(avgDuration)}
             </span>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-2 border-neon-blue shadow-neon group">
-          <CardHeader className="flex items-center gap-3">
-            <Calendar
-              size={28}
-              className="text-neon-blue group-hover:text-blue-300 drop-shadow-neon transition-colors duration-300"
-            />
-            <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+        </div>
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col">
+          <CardHeader className="flex items-center gap-3 bg-[#223366] border-b border-white">
+            <Calendar size={28} className="text-blue-200 w-7 h-7" />
+            <CardTitle className="text-white font-extrabold ml-2">
               Most Productive Day
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <span className="text-2xl font-semibold text-blue-200">
+            <span className="text-2xl font-semibold text-white">
               {mostProductiveDay?.date
                 ? new Date(mostProductiveDay.date).toLocaleDateString("en-US", {
                     weekday: "long",
@@ -91,33 +85,30 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ sessions }) => {
                 : "N/A"}
             </span>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-2 border-neon-blue shadow-neon group">
-          <CardHeader className="flex items-center gap-3">
-            <BarChart
-              size={28}
-              className="text-neon-blue group-hover:text-blue-300 drop-shadow-neon transition-colors duration-300"
-            />
-            <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+        </div>
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col">
+          <CardHeader className="flex items-center gap-3 bg-[#223366] border-b border-white">
+            <BarChart size={28} className="text-blue-200 w-7 h-7" />
+            <CardTitle className="text-white font-extrabold ml-2">
               Total Sessions
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <span className="text-3xl font-bold text-blue-200">
+            <span className="text-3xl font-bold text-white">
               {sessions.length}
             </span>
           </CardContent>
-        </Card>
+        </div>
       </div>
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 max-w-6xl mx-auto">
-        <Card className="glass-card border-2 border-neon-blue shadow-neon">
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col">
+          <CardHeader className="flex justify-between items-center bg-[#223366] border-b border-white">
+            <CardTitle className="text-white font-extrabold">
               Study Trends
             </CardTitle>
             <select
-              className="text-sm border border-neon-blue rounded-md py-1 px-3 bg-[#1e293b] text-neon-blue focus:outline-none focus:ring-2 focus:ring-neon-blue"
+              className="text-sm border border-white rounded-md py-1 px-3 bg-[#1e293b] text-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={timeRange}
               onChange={(e) =>
                 setTimeRange(e.target.value as "week" | "month" | "year")
@@ -133,25 +124,25 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ sessions }) => {
               <StudyChart dailyStats={dailyStats.slice(0, 7).reverse()} />
             </div>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-2 border-neon-blue shadow-neon">
-          <CardHeader>
-            <CardTitle className="text-neon-blue font-bold drop-shadow-neon">
+        </div>
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col">
+          <CardHeader className="bg-[#223366] border-b border-white">
+            <CardTitle className="text-white font-extrabold">
               Subject Distribution
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
+            <div className="h-64 text-white">
               <SubjectDistribution data={subjectDistribution} />
             </div>
           </CardContent>
-        </Card>
+        </div>
       </div>
       {/* Mood Analysis */}
       <div className="max-w-6xl mx-auto">
-        <Card className="glass-card border-2 border-neon-blue shadow-neon mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] mb-4">
+        <div className="rounded-xl overflow-hidden border border-white shadow-lg bg-gradient-to-br from-[#1e2233] to-[#223366] flex flex-col mb-8">
+          <CardHeader className="bg-[#223366] border-b border-white">
+            <CardTitle className="text-2xl font-bold text-white mb-4">
               Mood Analysis
             </CardTitle>
           </CardHeader>
@@ -169,10 +160,10 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ sessions }) => {
                       key={mood}
                       className="bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-lg p-4 shadow-neon border border-neon-blue hover:scale-105 transition-all duration-300 flex flex-col items-center group"
                     >
-                      <p className="text-lg font-semibold text-white mb-1 drop-shadow">
+                      <p className="text-lg font-semibold text-blue-200 mb-1 drop-shadow">
                         {mood.charAt(0).toUpperCase() + mood.slice(1)}
                       </p>
-                      <p className="text-2xl font-bold text-blue-200 mb-1 group-hover:text-blue-100 transition-colors duration-300 drop-shadow">
+                      <p className="text-2xl font-bold text-white mb-1 group-hover:text-blue-100 transition-colors duration-300 drop-shadow">
                         {percentage}%
                       </p>
                       <div className="w-full bg-blue-900/40 rounded-full h-2 mt-2 overflow-hidden">
@@ -187,7 +178,7 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ sessions }) => {
               )}
             </div>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );
