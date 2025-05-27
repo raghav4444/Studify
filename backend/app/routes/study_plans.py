@@ -30,7 +30,7 @@ async def create_study_plan(
         await db.commit()
         await db.refresh(db_study_plan)
         logger.info(f"Successfully created study plan with ID: {db_study_plan.id}")
-        return db_study_plan
+        return StudyPlan.model_validate(db_study_plan)
     except Exception as e:
         logger.error(f"Error creating study plan: {str(e)}")
         await db.rollback()
@@ -48,7 +48,7 @@ async def get_study_plans(
     try:
         result = await db.execute(select(StudyPlanModel).offset(skip).limit(limit))
         study_plans = result.scalars().all()
-        return [StudyPlan.from_orm(plan) for plan in study_plans]
+        return [StudyPlan.model_validate(plan) for plan in study_plans]
     except Exception as e:
         logger.error(f"Error fetching study plans: {str(e)}")
         raise HTTPException(
@@ -66,7 +66,7 @@ async def get_study_plan(
         study_plan = result.scalar_one_or_none()
         if study_plan is None:
             raise HTTPException(status_code=404, detail="Study plan not found")
-        return study_plan
+        return StudyPlan.model_validate(study_plan)
     except HTTPException:
         raise
     except Exception as e:
@@ -93,7 +93,7 @@ async def update_study_plan(
         
         await db.commit()
         await db.refresh(db_study_plan)
-        return db_study_plan
+        return StudyPlan.model_validate(db_study_plan)
     except HTTPException:
         raise
     except Exception as e:

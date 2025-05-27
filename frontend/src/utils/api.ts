@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE = 'https://studytracker-production-6ab9.up.railway.app';
+const API_BASE = "http://localhost:3001";
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
   baseURL: API_BASE,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   timeout: 5000, // 5 second timeout
 });
@@ -14,17 +14,17 @@ const axiosInstance = axios.create({
 // Add request interceptor for logging
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.baseURL && config.baseURL.startsWith('http://')) {
-      config.baseURL = config.baseURL.replace('http://', 'https://');
-    }
-    if (config.url && config.url.startsWith('http://')) {
-      config.url = config.url.replace('http://', 'https://');
-    }
-    console.log('Making request to:', config.url);
+    // if (config.baseURL && config.baseURL.startsWith("http://")) {
+    //   config.baseURL = config.baseURL.replace("http://", "https://");
+    // }
+    // if (config.url && config.url.startsWith("http://")) {
+    //   config.url = config.url.replace("http://", "https://");
+    // }
+    console.log("Making request to:", config.url);
     return config;
   },
   (error) => {
-    console.error('Request error:', error);
+    console.error("Request error:", error);
     return Promise.reject(error);
   }
 );
@@ -32,16 +32,16 @@ axiosInstance.interceptors.request.use(
 // Add response interceptor for logging
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('Response received:', response.status);
+    console.log("Response received:", response.status);
     return response;
   },
   (error) => {
-    if (error.code === 'ECONNABORTED') {
-      console.error('Request timeout');
+    if (error.code === "ECONNABORTED") {
+      console.error("Request timeout");
     } else if (!error.response) {
-      console.error('Network error - no response received');
+      console.error("Network error - no response received");
     } else {
-      console.error('Response error:', error.response.status);
+      console.error("Response error:", error.response.status);
     }
     return Promise.reject(error);
   }
@@ -66,10 +66,10 @@ const api = {
   // Study Plans
   getStudyPlans: async (): Promise<StudyPlan[]> => {
     try {
-      const response = await axiosInstance.get('/api/study-plans/');
+      const response = await axiosInstance.get("/api/study-plans/");
       return response.data;
     } catch (error) {
-      console.error('Error in getStudyPlans:', error);
+      console.error("Error in getStudyPlans:", error);
       throw error;
     }
   },
@@ -79,33 +79,36 @@ const api = {
       const response = await axiosInstance.get(`/api/study-plans/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Error in getStudyPlan:', error);
+      console.error("Error in getStudyPlan:", error);
       throw error;
     }
   },
 
   createStudyPlan: async (data: CreateStudyPlan): Promise<StudyPlan> => {
     try {
-      console.log('Sending data to create study plan:', data);
-      const response = await axiosInstance.post('/api/study-plans/', data);
-      console.log('Response from create study plan:', response.data);
+      console.log("Sending data to create study plan:", data);
+      const response = await axiosInstance.post("/api/study-plans/", data);
+      console.log("Response from create study plan:", response.data);
       return response.data;
     } catch (error) {
-      console.error('Error in createStudyPlan:', error);
+      console.error("Error in createStudyPlan:", error);
       if (axios.isAxiosError(error)) {
-        console.error('Response data:', error.response?.data);
-        console.error('Response status:', error.response?.status);
+        console.error("Response data:", error.response?.data);
+        console.error("Response status:", error.response?.status);
       }
       throw error;
     }
   },
 
-  updateStudyPlan: async (id: number, data: CreateStudyPlan): Promise<StudyPlan> => {
+  updateStudyPlan: async (
+    id: number,
+    data: CreateStudyPlan
+  ): Promise<StudyPlan> => {
     try {
       const response = await axiosInstance.put(`/api/study-plans/${id}`, data);
       return response.data;
     } catch (error) {
-      console.error('Error in updateStudyPlan:', error);
+      console.error("Error in updateStudyPlan:", error);
       throw error;
     }
   },
@@ -114,11 +117,11 @@ const api = {
     try {
       await axiosInstance.delete(`/api/study-plans/${id}`);
     } catch (error) {
-      console.error('Error in deleteStudyPlan:', error);
+      console.error("Error in deleteStudyPlan:", error);
       throw error;
     }
   },
 };
 
 export default api;
-export { axiosInstance }; 
+export { axiosInstance };
