@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_BASE = "http://localhost:3001";
+import { API_BASE } from "../config";
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
